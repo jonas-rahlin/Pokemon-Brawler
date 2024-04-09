@@ -47,9 +47,31 @@ const createSelections = (e) => {
 
 //Function for creating and appending DOM elements for selected Pokemons.
 const createPokemon = (pokemon, selectorID)=>{
+    //Variables
+    const pokemonDisplay = document.getElementById("pokemonDisplay");
+    const pokemonA = document.getElementById("pokemonA");
+    const pokemonB = document.getElementById("pokemonB");
+
+    //Clear Old Pokemon if they exist
+    if(selectorID === pokemonSelectorA){
+        if(pokemonA){
+            pokemonA.remove();
+        }
+    }
+    if(selectorID === pokemonSelectorB){
+        if(pokemonB){
+            pokemonB.remove();
+        }
+    }
+
     //Create Pokemon DIV
     const pokemonDiv = document.createElement('div');
-    pokemonDiv.id = 'pokemonA';
+        //Set correct ID
+    if(selectorID === pokemonSelectorA){
+        pokemonDiv.id = "pokemonA";
+    } else{
+        pokemonDiv.id = "pokemonB"
+    }
 
     //Create Name
     const h2 = document.createElement('h2');
@@ -138,22 +160,25 @@ const createPokemon = (pokemon, selectorID)=>{
 
     pokemonDiv.appendChild(pStats);
 
-    const pokemonDisplay = document.getElementById("pokemonDisplay");
     pokemonDisplay.appendChild(pokemonDiv);
 }
 
 const pokemonSelectorA = document.getElementById("pokemon_SelectA");
-const pokemonSelectorB = document.getElementById("pokemon_SelectA");
+const pokemonSelectorB = document.getElementById("pokemon_SelectB");
+
 
 pokemonSelectorA.addEventListener("change", ()=>{
-    const selectorID = pokemonSelectorA.value;
-    createPokemon(pokemonArr[selectorID], selectorID);
+    const selectedPokemon = pokemonSelectorA.value;
+    const selectorID = pokemonSelectorA;
+    createPokemon(pokemonArr[selectedPokemon], selectorID);
 })
 
 pokemonSelectorB.addEventListener("change", ()=>{
-    const selectorID = pokemonSelectorB.value;
-    createPokemon(pokemonArr[selectorID], selectorID);
+    const selectedPokemon = pokemonSelectorB.value;
+    const selectorID = pokemonSelectorB;
+    createPokemon(pokemonArr[selectedPokemon], selectorID);
 })
+
 
 
   
