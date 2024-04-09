@@ -6,15 +6,15 @@ for(let i = 1; i <= 151; i++ ){
 }
 
 console.log(promises);
-
 Promise.all(promises).then((results) => {
     console.log(results);
     results.forEach((e)=>{
-        const pokemon = new Pokemon(e.name, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
+        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
         console.log(pokemon);
-        
         createSelections(pokemon);
+        createPokemon(pokemon);
     })
+    
 })
 
 class Pokemon {
@@ -33,11 +33,11 @@ class Pokemon {
 const createSelections = (e) => {
     let optionA = document.createElement("option");
     optionA.value = e.id;
-    optionA.textContent = e.name;
+    optionA.textContent = `#${e.id} - ${e.name.toUpperCase()}`;
     
     let optionB = document.createElement("option");
     optionB.value = e.id;
-    optionB.textContent = e.name;
+    optionB.textContent = `#${e.id} - ${e.name.toUpperCase()}`;
     
     let selectorA = document.getElementById("pokemon_SelectA");
     let selectorB = document.getElementById("pokemon_SelectB");
@@ -50,42 +50,98 @@ const createSelections = (e) => {
 
 
 
-const createPokemon = (selectorID)=>{
-    const pokemon = document.createElement('div');
-    pokemon.id = 'pokemonA';
+const createPokemon = (pokemon, selectorID)=>{
+    //Create Pokemon DIV
+    const pokemonDiv = document.createElement('div');
+    pokemonDiv.id = 'pokemonA';
 
+    //Create Name
     const h2 = document.createElement('h2');
     h2.id = 'pokemonA_name';
     h2.className = 'pokemon_name';
-    pokemon.appendChild(h2);
+    h2.textContent = `#${pokemon.id} - ${pokemon.name.toUpperCase()}`;
+    pokemonDiv.appendChild(h2);
 
+    //Create Image
     const img = document.createElement('img');
-    img.src = '';
-    img.alt = '';
+    img.src = pokemon.img;
+    img.alt = '#';
     img.id = 'pokemonA_img';
     img.className = 'pokemon_img';
-    pokemon.appendChild(img);
+    pokemonDiv.appendChild(img);
 
+    //Create Type
     const pType = document.createElement('p');
     pType.id = 'pokemonA_type';
     pType.className = 'pokemon_type';
-    pokemon.appendChild(pType);
+    const pTypesArr = pokemon.type.map(typeObj => typeObj.type.name);
+    const pTypesStr = pTypesArr.join(', ');
+    pType.textContent = `Types: ${pTypesStr}`;
+    pokemonDiv.appendChild(pType);
 
+    //Create Height
     const pHeight = document.createElement('p');
     pHeight.id = 'pokemonA_height';
     pHeight.className = 'pokemon_height';
-    pokemon.appendChild(pHeight);
+    pHeight.textContent = `Height: ${pokemon.height}"`;
+    pokemonDiv.appendChild(pHeight);
 
+    //Create Weight
     const pWeight = document.createElement('p');
     pWeight.id = 'pokemonA_weight';
     pWeight.className = 'pokemon_weight';
-    pokemon.appendChild(pWeight);
+    pWeight.textContent = `Weight: ${pokemon.weight} lb`;
+    pokemonDiv.appendChild(pWeight);
 
-    const pHP = document.createElement('p');
+    //Create Stats DIV
+    const pStats = document.createElement("ul");
+    pStats.id = 'pokemonA_stats';
+    pStats.className = 'pokemon_stats';
+    
+    //Create HP
+    const pHP = document.createElement('li');
     pHP.id = 'pokemonA_hp';
     pHP.className = 'pokemon_hp';
-    pokemon.appendChild(pHP);
+    pHP.textContent = `Hit Points: ${pokemon.stats[0].base_stat}`;
+    pStats.appendChild(pHP);
+
+    //Create Attack
+    const pAttack = document.createElement('li');
+    pAttack.id = 'pokemonA_Att';
+    pAttack.className = 'pokemon_hp';
+    pAttack.textContent = `Attack: ${pokemon.stats[1].base_stat}`;
+    pStats.appendChild(pAttack);
+
+    //Create Defense
+    const pDefense = document.createElement('li');
+    pDefense.id = 'pokemonA_Def';
+    pDefense.className = 'pokemon_hp';
+    pDefense.textContent = `Defense: ${pokemon.stats[2].base_stat}`;
+    pStats.appendChild(pDefense);
+
+    //Create Special Attack
+    const pAttackS = document.createElement('li');
+    pAttackS.id = 'pokemonA_AttS';
+    pAttackS.className = 'pokemon_hp';
+    pAttackS.textContent = `Special Attack: ${pokemon.stats[3].base_stat}`;
+    pStats.appendChild(pAttackS);
+
+    //Create Special Defense
+    const pDefenseS = document.createElement('li');
+    pDefenseS.id = 'pokemonA_DefS';
+    pDefenseS.className = 'pokemon_hp';
+    pDefenseS.textContent = `Special Defense: ${pokemon.stats[4].base_stat}`;
+    pStats.appendChild(pDefenseS);
+
+    //Create Speed
+    const pSpeed = document.createElement('li');
+    pSpeed.id = 'pokemonA_Speed';
+    pSpeed.className = 'pokemon_hp';
+    pSpeed.textContent = `Speed: ${pokemon.stats[5].base_stat}`;
+    pStats.appendChild(pSpeed);
+
+    pokemonDiv.appendChild(pStats);
 
     const pokemonDisplay = document.getElementById("pokemonDisplay");
-    pokemonDisplay.appendChild(pokemon);
+    pokemonDisplay.appendChild(pokemonDiv);
 }
