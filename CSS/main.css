@@ -32,7 +32,7 @@ main{
 }
 
 #selection .container{
-  width:50%;
+  width:60%;
 }
 
 #selection .container .container{
@@ -53,7 +53,7 @@ main{
 }
 
 #pokemon_Display{
-  width:50%;
+  width: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
