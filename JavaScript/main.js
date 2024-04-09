@@ -25,17 +25,18 @@ Promise.all(promises).then((results) => {
         const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
         pokemonArr.push(pokemon);
         createSelections(pokemon);
+        randomPokemon();
     })
 })
 
 //Function for creating and appending DOM <Option> elements for all Pokemons.
 const createSelections = (e) => {
     let optionA = document.createElement("option");
-    optionA.value = e.id;
+    optionA.value = e.id-1;
     optionA.textContent = `#${e.id} - ${e.name.toUpperCase()}`;
     
     let optionB = document.createElement("option");
-    optionB.value = e.id;
+    optionB.value = e.id-1;
     optionB.textContent = `#${e.id} - ${e.name.toUpperCase()}`;
     
     let selectorA = document.getElementById("pokemon_SelectA");
@@ -163,16 +164,24 @@ const createPokemon = (pokemon, selectorID)=>{
     pokemonDisplay.appendChild(pokemonDiv);
 }
 
+//Generate Random Pokemons
+const randomPokemon = ()=>{
+    pokemonSelectorA.selectedIndex = Math.floor(Math.random() * 151) + 1;
+    pokemonSelectorA.dispatchEvent(new Event('change'));
+    pokemonSelectorB.selectedIndex = Math.floor(Math.random() * 151) + 1;
+    pokemonSelectorB.dispatchEvent(new Event('change'));
+}
+
+//Pokemon Selector DOM Varaibles
 const pokemonSelectorA = document.getElementById("pokemon_SelectA");
 const pokemonSelectorB = document.getElementById("pokemon_SelectB");
 
-
+//EventListners for triggering pokemon creation
 pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
     const selectorID = pokemonSelectorA;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
 })
-
 pokemonSelectorB.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorB.value;
     const selectorID = pokemonSelectorB;
