@@ -21,3 +21,61 @@ body {
 main{
   
 }
+
+#selection{
+  width:100%;
+  height:100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#selection .container{
+  width:50%;
+}
+
+#selection .container .container{
+  width:100%;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#selection select{
+  width:50%;
+  margin:1rem;
+  border-radius: 0.2rem;
+}
+
+#pokemonDisplay{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width:50%;
+}
+
+.pokemon{
+  padding:1rem;
+  border: solid 1px black;
+  border-radius: 0.2rem;
+  width:50%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin:1rem;
+}
+
+.pokemon p{
+  margin:0.1rem;
+}
+
+.pokemon ul{
+  border:solid 1px black;
+  border-radius: 0.5rem;
+  padding:1rem;
+  list-style-position:inside;
+  margin-top:0.5rem;
+}

@@ -16,3 +16,5 @@ Skapade BAS funktionalitet för pokemon class.
 Skapade HTML template för dom DOM skapande i JS.
 Gav till Chat GPT för konstruktion.
 Skapade funktionalitet för DOM element skapande.
+
+Behövde en paus från JS så började styleing tidigare.

@@ -25,8 +25,8 @@ Promise.all(promises).then((results) => {
         const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
         pokemonArr.push(pokemon);
         createSelections(pokemon);
-        randomPokemon();
     })
+    randomPokemon();
 })
 
 //Function for creating and appending DOM <Option> elements for all Pokemons.
@@ -67,6 +67,7 @@ const createPokemon = (pokemon, selectorID)=>{
 
     //Create Pokemon DIV
     const pokemonDiv = document.createElement('div');
+    pokemonDiv.classList.add("pokemon");
         //Set correct ID
     if(selectorID === pokemonSelectorA){
         pokemonDiv.id = "pokemonA";
@@ -164,7 +165,7 @@ const createPokemon = (pokemon, selectorID)=>{
     pokemonDisplay.appendChild(pokemonDiv);
 }
 
-//Generate Random Pokemons
+//Function for selecting Random Pokemons
 const randomPokemon = ()=>{
     pokemonSelectorA.selectedIndex = Math.floor(Math.random() * 151) + 1;
     pokemonSelectorA.dispatchEvent(new Event('change'));
