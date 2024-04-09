@@ -49,7 +49,8 @@ const createSelections = (e) => {
 //Function for creating and appending DOM elements for selected Pokemons.
 const createPokemon = (pokemon, selectorID)=>{
     //Variables
-    const pokemonDisplay = document.getElementById("pokemonDisplay");
+    const pokemonDisplayA = document.getElementById("pokemon_DisplayA");
+    const pokemonDisplayB = document.getElementById("pokemon_DisplayB");
     const pokemonA = document.getElementById("pokemonA");
     const pokemonB = document.getElementById("pokemonB");
 
@@ -71,8 +72,10 @@ const createPokemon = (pokemon, selectorID)=>{
         //Set correct ID
     if(selectorID === pokemonSelectorA){
         pokemonDiv.id = "pokemonA";
+        console.log("a");
     } else{
         pokemonDiv.id = "pokemonB"
+        console.log("b");
     }
 
     //Create Name
@@ -92,7 +95,7 @@ const createPokemon = (pokemon, selectorID)=>{
 
     //Create Bio Div
     const pBio = document.createElement("div");
-    pBio.classList.add("bio");
+    pBio.classList.add("pokemon_bio");
     pBio.id = "pokemonA_bio";
     pokemonDiv.appendChild(pBio);
 
@@ -168,7 +171,11 @@ const createPokemon = (pokemon, selectorID)=>{
 
     pokemonDiv.appendChild(pStats);
 
-    pokemonDisplay.appendChild(pokemonDiv);
+    if(selectorID === pokemonSelectorA){
+        pokemonDisplayA.appendChild(pokemonDiv);
+    } else {
+        pokemonDisplayB.appendChild(pokemonDiv);
+    }
 }
 
 //Function for selecting Random Pokemons
