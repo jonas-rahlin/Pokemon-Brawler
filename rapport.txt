@@ -5,13 +5,13 @@ JS BAS FUNKTION
 STYLING
 EXTRA UPPGIFT
 
+Satte upp work enviroment.
 
 Skapade Basic HTML template.
 
 Skapade functionalitet för att hämta api.
 
 Skapade BAS funktionalitet för pokemon class.
-
 
 Skapade HTML template för dom DOM skapande i JS.
 Gav till Chat GPT för konstruktion.

@@ -95,7 +95,7 @@ const createPokemon = (pokemon, selectorID)=>{
     pType.className = 'pokemon_type';
     const pTypesArr = pokemon.type.map(typeObj => typeObj.type.name);
     const pTypesStr = pTypesArr.join(', ');
-    pType.textContent = `Types: ${pTypesStr}`;
+    pType.textContent = `Type: ${pTypesStr}`;
     pokemonDiv.appendChild(pType);
 
     //Create Height
