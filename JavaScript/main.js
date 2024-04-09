@@ -1,22 +1,11 @@
-/* https://pokeapi.co/api/v2/pokemon?limit=151 */
+//Fetch API Data.
 const promises = [];
 for(let i = 1; i <= 151; i++ ){
     const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
     promises.push(fetch(url).then((res) => res.json()));
 }
 
-console.log(promises);
-Promise.all(promises).then((results) => {
-    console.log(results);
-    results.forEach((e)=>{
-        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
-        console.log(pokemon);
-        createSelections(pokemon);
-        createPokemon(pokemon);
-    })
-    
-})
-
+//Create Pokemon Class.
 class Pokemon {
     constructor(name, id, img, type, weight, height, stats) {
         this.name = name;
@@ -29,7 +18,17 @@ class Pokemon {
     }
 }
 
-//Create and Append DOM <Option> Elements for all Pokemons
+//Create Array of Pokemons from data, then create pokemon DOM Selections.
+const pokemonArr = []
+Promise.all(promises).then((results) => {
+    results.forEach((e)=>{
+        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
+        pokemonArr.push(pokemon);
+        createSelections(pokemon);
+    })
+})
+
+//Function for creating and appending DOM <Option> elements for all Pokemons.
 const createSelections = (e) => {
     let optionA = document.createElement("option");
     optionA.value = e.id;
@@ -46,10 +45,7 @@ const createSelections = (e) => {
     selectorB.appendChild(optionB);
 }
 
-
-
-
-
+//Function for creating and appending DOM elements for selected Pokemons.
 const createPokemon = (pokemon, selectorID)=>{
     //Create Pokemon DIV
     const pokemonDiv = document.createElement('div');
@@ -145,3 +141,21 @@ const createPokemon = (pokemon, selectorID)=>{
     const pokemonDisplay = document.getElementById("pokemonDisplay");
     pokemonDisplay.appendChild(pokemonDiv);
 }
+
+const pokemonSelectorA = document.getElementById("pokemon_SelectA");
+const pokemonSelectorB = document.getElementById("pokemon_SelectA");
+
+pokemonSelectorA.addEventListener("change", ()=>{
+    const selectorID = pokemonSelectorA.value;
+    createPokemon(pokemonArr[selectorID], selectorID);
+})
+
+pokemonSelectorB.addEventListener("change", ()=>{
+    const selectorID = pokemonSelectorB.value;
+    createPokemon(pokemonArr[selectorID], selectorID);
+})
+
+
+  
+  
+
