@@ -1,2 +1,4 @@
 compare method
 styling
+
+fix create pokemon ids to B's

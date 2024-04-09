@@ -90,6 +90,12 @@ const createPokemon = (pokemon, selectorID)=>{
     img.className = 'pokemon_img';
     pokemonDiv.appendChild(img);
 
+    //Create Bio Div
+    const pBio = document.createElement("div");
+    pBio.classList.add("bio");
+    pBio.id = "pokemonA_bio";
+    pokemonDiv.appendChild(pBio);
+
     //Create Type
     const pType = document.createElement('p');
     pType.id = 'pokemonA_type';
@@ -97,23 +103,23 @@ const createPokemon = (pokemon, selectorID)=>{
     const pTypesArr = pokemon.type.map(typeObj => typeObj.type.name);
     const pTypesStr = pTypesArr.join(', ');
     pType.textContent = `Type: ${pTypesStr}`;
-    pokemonDiv.appendChild(pType);
+    pBio.appendChild(pType);
 
     //Create Height
     const pHeight = document.createElement('p');
     pHeight.id = 'pokemonA_height';
     pHeight.className = 'pokemon_height';
     pHeight.textContent = `Height: ${pokemon.height}"`;
-    pokemonDiv.appendChild(pHeight);
+    pBio.appendChild(pHeight);
 
     //Create Weight
     const pWeight = document.createElement('p');
     pWeight.id = 'pokemonA_weight';
     pWeight.className = 'pokemon_weight';
     pWeight.textContent = `Weight: ${pokemon.weight} lb`;
-    pokemonDiv.appendChild(pWeight);
+    pBio.appendChild(pWeight);
 
-    //Create Stats DIV
+    //Create Stats Ul
     const pStats = document.createElement("ul");
     pStats.id = 'pokemonA_stats';
     pStats.className = 'pokemon_stats';
