@@ -1,0 +1,18 @@
+Skpade plan för vilken ordning jag skulle göra allt.
+
+HTML BAS
+JS BAS FUNKTION
+STYLING
+EXTRA UPPGIFT
+
+
+Skapade Basic HTML template.
+
+Skapade functionalitet för att hämta api.
+
+Skapade BAS funktionalitet för pokemon class.
+
+
+Skapade HTML template för dom DOM skapande i JS.
+Gav till Chat GPT för konstruktion.
+Skapade funktionalitet för DOM element skapande.
