@@ -1,4 +1,4 @@
-compare method
 styling
+compare highlight styling
 
-fix create pokemon ids to B's
+COMPARE WINNER

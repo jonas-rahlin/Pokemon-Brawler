@@ -81,7 +81,6 @@ const createSelections = (e) => {
 
 //Function for creating and appending DOM elements for selected Pokemons.
 const createPokemon = (pokemon, selectorID, )=>{
-    console.log(selectorID);
     //Variables
     const pokemonDisplayA = document.getElementById("pokemon_DisplayA");
     const pokemonDisplayB = document.getElementById("pokemon_DisplayB");
@@ -103,16 +102,15 @@ const createPokemon = (pokemon, selectorID, )=>{
     //Create Pokemon DIV
     const pokemonDiv = document.createElement('div');
     pokemonDiv.classList.add("pokemon");
+    pokemonDiv.setAttribute("data-id", pokemon.id);
 
     //Set correct ID
     let selectedID;
     if(selectorID === pokemonSelectorA){
         pokemonDiv.id = "pokemonA";
-        console.log("a");
         selectedID = "A";
     } else{
         pokemonDiv.id = "pokemonB";
-        console.log("b");
         selectedID = "B";
     }
 
@@ -245,13 +243,53 @@ pokemonSelectorB.addEventListener("change", ()=>{
     activePokemons[1] = pokemonArr[selectedPokemon];
 })
 
+
+
 const highlightWinner = ()=>{
-    const winnerIds = activePokemons[0].comparePokemons(activePokemons[1]);
-    
+    const pokemon = [...document.querySelectorAll(".pokemon")];
+    const winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
+
+    pokemon.forEach((element)=>{
+        //DOM Element Variables
+        let domheight = element.querySelector('.pokemon_height');
+        let domweight = element.querySelector('.pokemon_weight');
+        let domhp = element.querySelector('.pokemon_hp');
+        let domatt = element.querySelector('.pokemon_att');
+        let domdef = element.querySelector('.pokemon_def');
+        let domattS = element.querySelector('.pokemon_attS');
+        let domdefS = element.querySelector('.pokemon_defS');
+        let domspeed = element.querySelector('.pokemon_speed');
+
+        //Highlight Attributes
+        if(element.dataset.id === winnerArr[0].toString()){
+            domheight.classList.add("winner_attr");
+        }
+
+        if(element.dataset.id === winnerArr[1].toString()){
+            domweight.classList.add("winner_attr");
+        }
+
+        //Highlight Stats
+        if(element.dataset.id === winnerArr[2].toString()){
+            domhp.classList.add("winner_stat");
+        }
+        if(element.dataset.id === winnerArr[3].toString()){
+            domatt.classList.add("winner_stat");
+        }
+        if(element.dataset.id === winnerArr[4].toString()){
+            domdef.classList.add("winner_stat");
+        }
+        if(element.dataset.id === winnerArr[5].toString()){
+            domattS.classList.add("winner_stat");
+        }
+        if(element.dataset.id === winnerArr[6].toString()){
+            domdefS.classList.add("winner_stat");
+        }
+        if(element.dataset.id === winnerArr[7].toString()){
+            domspeed.classList.add("winner_stat");
+        }
+    })
 }
-
-
-
   
-  
+
 

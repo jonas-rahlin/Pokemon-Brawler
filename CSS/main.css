@@ -99,6 +99,7 @@ main{
 .pokemon_bio p{
   padding:0.1rem;
   font-size: 1rem;
+  width:fit-content;
 }
 
 .pokemon_stats{
@@ -114,4 +115,12 @@ main{
 
 .pokemon_stats li{
   margin:0.5rem;
+}
+
+.winner_attr{
+  color: blue;
+}
+
+.winner_stat{
+  color:yellow;
 }
