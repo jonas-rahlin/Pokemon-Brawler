@@ -67,13 +67,13 @@ pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
     const selectorID = pokemonSelectorA;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
-    highlightWinner();
+    highlightStats();
 })
 pokemonSelectorB.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorB.value;
     const selectorID = pokemonSelectorB;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
-    highlightWinner();
+    highlightStats();
 })
 
 //Fill Array of Pokemons from data.
@@ -88,7 +88,7 @@ Promise.all(promises).then((results) => {
 
     randomPokemon();
 
-    highlightWinner();
+    highlightStats();
 })
 
 //Create and append DOM <Option> elements for all Pokemons.
@@ -251,7 +251,8 @@ const randomPokemon = ()=>{
     pokemonSelectorB.dispatchEvent(new Event('change'));
 }
 
-const highlightWinner = ()=>{
+//Highlight Winning Stats
+const highlightStats = ()=>{
     const pokemon = [...document.querySelectorAll(".pokemon")];
 
     //Remove Highlights
