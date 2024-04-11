@@ -67,13 +67,13 @@ pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
     const selectorID = pokemonSelectorA;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
-    activePokemons[0] = pokemonArr[selectedPokemon];
+    highlightWinner();
 })
 pokemonSelectorB.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorB.value;
     const selectorID = pokemonSelectorB;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
-    activePokemons[1] = pokemonArr[selectedPokemon];
+    highlightWinner();
 })
 
 //Fill Array of Pokemons from data.
@@ -88,7 +88,6 @@ Promise.all(promises).then((results) => {
 
     randomPokemon();
 
-    winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
     highlightWinner();
 })
 
@@ -253,8 +252,23 @@ const randomPokemon = ()=>{
 }
 
 const highlightWinner = ()=>{
-const pokemon = [...document.querySelectorAll(".pokemon")];
+    const pokemon = [...document.querySelectorAll(".pokemon")];
+
+    //Remove Highlights
+    document.querySelectorAll(".winner_stat").forEach(element => {
+        element.classList.remove("winner_stat");
+    });
+    document.querySelectorAll(".winner_attr").forEach(element => {
+        element.classList.remove("winner_attr");
+    });
+
     pokemon.forEach((element)=>{
+
+        //Set Active Pokemons and Winner values
+        activePokemons[0] = pokemonArr[pokemonSelectorA.value];
+        activePokemons[1] = pokemonArr[pokemonSelectorB.value];
+        winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
+
         //DOM Element Variables
         let domHeight = element.querySelector('.pokemon_height');
         let domWeight = element.querySelector('.pokemon_weight');
@@ -269,7 +283,6 @@ const pokemon = [...document.querySelectorAll(".pokemon")];
         if(element.dataset.id === winnerArr[0].toString()){
             domHeight.classList.add("winner_attr");
         }
-
         if(element.dataset.id === winnerArr[1].toString()){
             domWeight.classList.add("winner_attr");
         }
