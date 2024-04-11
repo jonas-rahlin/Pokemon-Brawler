@@ -224,7 +224,7 @@ const pokemonSelectorA = document.getElementById("pokemon_SelectA");
 const pokemonSelectorB = document.getElementById("pokemon_SelectB");
 
 //Array storing currently active Pokemons
-const activePokemons = [];
+let activePokemons = [];
 
 //EventListners for triggering pokemon creation
 pokemonSelectorA.addEventListener("change", ()=>{
@@ -239,6 +239,11 @@ pokemonSelectorB.addEventListener("change", ()=>{
     createPokemon(pokemonArr[selectedPokemon], selectorID);
     activePokemons[1] = pokemonArr[selectedPokemon];
 })
+
+const highlightWinner = ()=>{
+    const winnerIds = activePokemons[0].comparePokemons(activePokemons[1]);
+    
+}
 
 
 
