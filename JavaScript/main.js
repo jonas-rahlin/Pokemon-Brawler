@@ -16,6 +16,39 @@ class Pokemon {
         this.height = height;
         this.stats = stats;
     }
+
+    comparePokemons(comparedPokemon) {
+        const results = [];
+        if(this.height > comparedPokemon.height) {
+            results.push(this.id);
+        } else if(this.height < comparedPokemon.height) {
+            results.push(comparedPokemon.id);
+        } else {
+            results.push(null);
+        }
+
+        if(this.weight > comparedPokemon.weight) {
+            results.push(this.id);
+        } else if(this.weight < comparedPokemon.weight) {
+            results.push(comparedPokemon.id);
+        } else {
+            results.push(null);
+        }
+
+        this.stats.forEach((stat, index) => {
+            const comparedStat = comparedPokemon.stats[index];
+
+            if (stat.base_stat > comparedStat.base_stat) {
+                results.push(this.id);
+            } else if (stat.base_stat < comparedStat.base_stat) {
+                results.push(comparedPokemon.id);
+            } else {
+                results.push(null)
+            }
+        });
+
+        return results;
+    }
 }
 
 //Create Array of Pokemons from data, then create pokemon DOM Selections.
@@ -186,20 +219,25 @@ const randomPokemon = ()=>{
     pokemonSelectorB.dispatchEvent(new Event('change'));
 }
 
-//Pokemon Selector DOM Varaibles
+//Pokemon Selector DOM Variables
 const pokemonSelectorA = document.getElementById("pokemon_SelectA");
 const pokemonSelectorB = document.getElementById("pokemon_SelectB");
+
+//Array storing currently active Pokemons
+const activePokemons = [];
 
 //EventListners for triggering pokemon creation
 pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
     const selectorID = pokemonSelectorA;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
+    activePokemons[0] = pokemonArr[selectedPokemon];
 })
 pokemonSelectorB.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorB.value;
     const selectorID = pokemonSelectorB;
     createPokemon(pokemonArr[selectedPokemon], selectorID);
+    activePokemons[1] = pokemonArr[selectedPokemon];
 })
 
 
