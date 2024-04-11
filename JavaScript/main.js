@@ -58,6 +58,9 @@ const pokemonSelectorB = document.getElementById("pokemon_SelectB");
 const pokemonArr = [];
 let activePokemons = [];
 
+//Array for tracking winner stats
+let winnerArr = [];
+
 //EventListners for triggering pokemon creation
 pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
@@ -81,6 +84,11 @@ Promise.all(promises).then((results) => {
         pokemonArr.push(pokemon);
         createSelections(pokemon);
     });
+
+    randomPokemon();
+
+    winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
+    highlightWinner();
 })
 
 //Create and append DOM <Option> elements for all Pokemons.
@@ -235,7 +243,7 @@ const createPokemon = (pokemon, selectorID, )=>{
     }
 }
 
-//Function for selecting Random Pokemons
+//Select Random Pokemons
 const randomPokemon = ()=>{
     pokemonSelectorA.selectedIndex = Math.floor(Math.random() * 151) + 1;
     pokemonSelectorA.dispatchEvent(new Event('change'));
@@ -245,12 +253,7 @@ const randomPokemon = ()=>{
 
 const highlightWinner = ()=>{
 const pokemon = [...document.querySelectorAll(".pokemon")];
-    console.log(pokemon);
-
-    //Create array with id for each winning stat
-    console.log(winnerArr);
-
-/* pokemon.forEach((element)=>{
+    pokemon.forEach((element)=>{
         //DOM Element Variables
         let domheight = element.querySelector('.pokemon_height');
         let domweight = element.querySelector('.pokemon_weight');
@@ -289,7 +292,7 @@ const pokemon = [...document.querySelectorAll(".pokemon")];
         if(element.dataset.id === winnerArr[7].toString()){
             domspeed.classList.add("winner_stat");
         }
-    }) */
+    })
 }
   
 
