@@ -263,7 +263,6 @@ const highlightWinner = ()=>{
     });
 
     pokemon.forEach((element)=>{
-
         //Set Active Pokemons and Winner values
         activePokemons[0] = pokemonArr[pokemonSelectorA.value];
         activePokemons[1] = pokemonArr[pokemonSelectorB.value];
