@@ -22,3 +22,7 @@ Behövde en paus från JS så började styleing tidigare.
 
 Hinder: id för selectorer som används, som ska matchas för att appenda rätt div
     hur trigga eventlistner genom javascript istälelt för i domen
+    eventlistener active pokemon error, 
+
+
+    felet är att funktionen körs innan pokemon arr har hunnit skapats.
