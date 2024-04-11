@@ -79,7 +79,7 @@ pokemonSelectorB.addEventListener("change", ()=>{
 //Fill Array of Pokemons from data.
 //Create pokemon DOM Selections.
 //Compare active pokemons in winnerArr.
-/* Promise.all(promises).then((results) => {
+Promise.all(promises).then((results) => {
     results.forEach((e)=>{
         const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
         pokemonArr.push(pokemon);
@@ -90,45 +90,7 @@ pokemonSelectorB.addEventListener("change", ()=>{
 
     winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
     highlightWinner();
-}) */
-
-Promise.all(promises).then((results) => {
-    results.forEach((e)=>{
-        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
-        pokemonArr.push(pokemon);
-        createSelections(pokemon);
-    });
-
-    randomPokemon();
-
-    // EventListeners for triggering pokemon creation
-    const pokemonSelectorAChangeHandler = () => {
-        const selectedPokemon = pokemonSelectorA.value;
-        const selectorID = pokemonSelectorA;
-        createPokemon(pokemonArr[selectedPokemon], selectorID);
-        activePokemons[0] = pokemonArr[selectedPokemon];
-        updateWinnerAndHighlight();
-    };
-    
-    const pokemonSelectorBChangeHandler = () => {
-        const selectedPokemon = pokemonSelectorB.value;
-        const selectorID = pokemonSelectorB;
-        createPokemon(pokemonArr[selectedPokemon], selectorID);
-        activePokemons[1] = pokemonArr[selectedPokemon];
-        updateWinnerAndHighlight();
-    };
-
-    pokemonSelectorA.addEventListener("change", pokemonSelectorAChangeHandler);
-    pokemonSelectorB.addEventListener("change", pokemonSelectorBChangeHandler);
-
-    const updateWinnerAndHighlight = () => {
-        winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
-        highlightWinner();
-    };
-
-    // Initial winnerArr calculation and highlight
-    updateWinnerAndHighlight();
-});
+})
 
 //Create and append DOM <Option> elements for all Pokemons.
 const createSelections = (e) => {
