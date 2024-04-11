@@ -24,7 +24,7 @@ class Pokemon {
         } else if(this.height < comparedPokemon.height) {
             results.push(comparedPokemon.id);
         } else {
-            results.push(null);
+            results.push(0);
         }
 
         if(this.weight > comparedPokemon.weight) {
@@ -32,7 +32,7 @@ class Pokemon {
         } else if(this.weight < comparedPokemon.weight) {
             results.push(comparedPokemon.id);
         } else {
-            results.push(null);
+            results.push(0);
         }
 
         this.stats.forEach((stat, index) => {
@@ -43,7 +43,7 @@ class Pokemon {
             } else if (stat.base_stat < comparedStat.base_stat) {
                 results.push(comparedPokemon.id);
             } else {
-                results.push(null)
+                results.push(0)
             }
         });
 
@@ -256,42 +256,42 @@ const highlightWinner = ()=>{
 const pokemon = [...document.querySelectorAll(".pokemon")];
     pokemon.forEach((element)=>{
         //DOM Element Variables
-        let domheight = element.querySelector('.pokemon_height');
-        let domweight = element.querySelector('.pokemon_weight');
-        let domhp = element.querySelector('.pokemon_hp');
-        let domatt = element.querySelector('.pokemon_att');
-        let domdef = element.querySelector('.pokemon_def');
-        let domattS = element.querySelector('.pokemon_attS');
-        let domdefS = element.querySelector('.pokemon_defS');
-        let domspeed = element.querySelector('.pokemon_speed');
+        let domHeight = element.querySelector('.pokemon_height');
+        let domWeight = element.querySelector('.pokemon_weight');
+        let domHp = element.querySelector('.pokemon_hp');
+        let domAtt = element.querySelector('.pokemon_att');
+        let domDef = element.querySelector('.pokemon_def');
+        let domAttS = element.querySelector('.pokemon_attS');
+        let domDefS = element.querySelector('.pokemon_defS');
+        let domSpeed = element.querySelector('.pokemon_speed');
 
         //Highlight Attributes
         if(element.dataset.id === winnerArr[0].toString()){
-            domheight.classList.add("winner_attr");
+            domHeight.classList.add("winner_attr");
         }
 
         if(element.dataset.id === winnerArr[1].toString()){
-            domweight.classList.add("winner_attr");
+            domWeight.classList.add("winner_attr");
         }
 
         //Highlight Stats
         if(element.dataset.id === winnerArr[2].toString()){
-            domhp.classList.add("winner_stat");
+            domHp.classList.add("winner_stat");
         }
         if(element.dataset.id === winnerArr[3].toString()){
-            domatt.classList.add("winner_stat");
+            domAtt.classList.add("winner_stat");
         }
         if(element.dataset.id === winnerArr[4].toString()){
-            domdef.classList.add("winner_stat");
+            domDef.classList.add("winner_stat");
         }
         if(element.dataset.id === winnerArr[5].toString()){
-            domattS.classList.add("winner_stat");
+            domAttS.classList.add("winner_stat");
         }
         if(element.dataset.id === winnerArr[6].toString()){
-            domdefS.classList.add("winner_stat");
+            domDefS.classList.add("winner_stat");
         }
         if(element.dataset.id === winnerArr[7].toString()){
-            domspeed.classList.add("winner_stat");
+            domSpeed.classList.add("winner_stat");
         }
     })
 }
