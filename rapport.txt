@@ -1,5 +1,7 @@
 Skpade plan för vilken ordning jag skulle göra allt.
 
+GPT hjälp genom hela projektet. 
+
 HTML BAS
 JS BAS FUNKTION
 STYLING
@@ -18,6 +20,10 @@ Gav till Chat GPT för konstruktion.
 Skapade funktionalitet för DOM element skapande.
 
 Behövde en paus från JS så började styleing tidigare.
+
+Gjorde klart JS för del 1.
+
+Startade styling för del2.
 
 
 Hinder: id för selectorer som används, som ska matchas för att appenda rätt div

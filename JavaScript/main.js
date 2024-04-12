@@ -49,6 +49,60 @@ class Pokemon {
 
         return results;
     }
+
+    fightSequence(opponent) {
+        let first;
+        let second;
+
+        if(this.stats[5].base_stat >= opponent.stats[5].base_stat){
+            first = this;
+            second = opponent;
+        }   else{
+            first = opponent;
+            second = this;
+        }
+
+        let firstHP = first.stats[0].base_stat;
+        let secondHP = second.stats[0].base_stat;
+
+        const firstAttack = () =>{
+            let totalAtt = first.stats[1].base_stat + first.stats[3].base_stat;
+            let totalDef = (second.stats[2].base_stat + second.stats[4].base_stat) * 8;
+            let totalDmg = totalAtt - totalDef;
+
+            if(totalDmg <= 10){
+                totalDmg = 10;
+            }
+
+            secondHP = secondHP - totalDmg;
+
+            console.log("secondHP = " + secondHP);
+        }
+
+        const secondAttack = () =>{
+            let totalAtt = second.stats[1].base_stat + second.stats[3].base_stat;
+            let totalDef = (first.stats[2].base_stat + first.stats[4].base_stat) * 8;
+            let totalDmg = totalAtt - totalDef;
+
+            if(totalDmg < 10){
+                totalDmg = 10;
+            }
+
+            firstHP = firstHP - totalDmg;
+
+            console.log("firstHP = " + firstHP);
+        }
+
+        while(firstHP > 0 && secondHP > 0) {
+            firstAttack();
+            if(secondHP > 0){
+                secondAttack();
+            }
+            console.log("Round Completed");
+        }
+
+        console.log("Fight End");
+    }
 }
 
 //Pokemon Selector DOM Variables
@@ -307,6 +361,11 @@ const highlightStats = ()=>{
             domSpeed.classList.add("winner_stat");
         }
     })
+}
+
+const fightInitiator = ()=>{
+    let activeFighters = [...activePokemons];
+    console.log(activeFighters);
 }
   
 
