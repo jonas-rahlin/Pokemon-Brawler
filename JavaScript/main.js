@@ -55,11 +55,11 @@ class Pokemon {
         let second;
 
         if(this.stats[5].base_stat >= opponent.stats[5].base_stat){
-            first = this;
-            second = opponent;
+            first = {...this};
+            second = {...opponent};
         }   else{
-            first = opponent;
-            second = this;
+            first = {...opponent};
+            second = {...this};
         }
 
         let firstHP = first.stats[0].base_stat;
@@ -363,10 +363,13 @@ const highlightStats = ()=>{
     })
 }
 
-const fightInitiator = ()=>{
-    let activeFighters = [...activePokemons];
-    console.log(activeFighters);
+const eventAnnounce = (eventTarget) => {
+    const eventDisplay = document.getElementById("battle_event");
+    const eventA = document.getElementById("battle_eventA");
+    const eventB = document.getElementById("battle_eventB");
 }
   
+
+
 
 

@@ -151,7 +151,7 @@ main{
   box-shadow: yellow 0px 1px 4px, yellow 0px 0px 0px 3px;
 }
 
-#battleArena{
+#battle_event{
   position:fixed;
   top: 50%;
   left: 50%;
@@ -163,16 +163,18 @@ main{
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  display:none;
 }
 
-#battleArena h3{
+#battle_event h3{
   font-family: "Bangers", system-ui;
   font-size: 8rem;
 }
 
-#battleArena h4{
+#battle_event h4{
   font-size: 2rem;
   margin:1rem;
 }
 
+.display_none{
+  display: none !important;
+}
