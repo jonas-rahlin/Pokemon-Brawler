@@ -138,10 +138,10 @@ class Pokemon {
             console.log("firstHP = " + firstHP);
 
             const attackInfo = {
-                attacker:first.name, 
+                attacker:second.name, 
                 damage:totalDmg,
-                defender: second.name, 
-                hpLeft: secondHP
+                defender: first.name, 
+                hpLeft: firstHP
             }
             fightInfo.push(attackInfo);
         }
