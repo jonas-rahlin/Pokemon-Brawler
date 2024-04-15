@@ -158,7 +158,6 @@ main{
   transform: translate(-50%, -50%);
   width:75%;
   height: 50%;
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -178,3 +177,8 @@ main{
 .display_none{
   display: none !important;
 }
+
+.visibility_hidden{
+  visibility: hidden !important;
+}
+

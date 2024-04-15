@@ -5,13 +5,16 @@ let activePokemons = [];
 //Array for tracking winner stats.
 let winnerArr = [];
 
+//Array for storing Fight Information
+let fightInfo = [];
+
 //Initiate Pokemon Creation
 fetchPokemonData();
 
 //Pokemon Selector DOM Variables.
 const pokemonSelectorA = document.getElementById("pokemon_SelectA");
 const pokemonSelectorB = document.getElementById("pokemon_SelectB");
-//Add eventListners for triggering pokemon DOM creation.
+//EventListners for triggering pokemon DOM creation.
 pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
     const selectorID = pokemonSelectorA;
@@ -25,6 +28,12 @@ pokemonSelectorB.addEventListener("change", ()=>{
     highlightStats();
 })
 
+//Battle Btn DOM Variable
+const battleBtn = document.getElementById("battle_Btn");
+//Eventlistener to start combat sequence
+battleBtn.addEventListener("click", ()=>{
+    activePokemons[0].fightSequence(activePokemons[1]);
+})
 
 /* Classes and Functions. */
 //Pokemon Class.
@@ -86,44 +95,90 @@ class Pokemon {
 
         let firstHP = first.stats[0].base_stat;
         let secondHP = second.stats[0].base_stat;
+        let totalDmg;
+        console.log(firstHP, secondHP);
 
         const firstAttack = () =>{
             let totalAtt = first.stats[1].base_stat + first.stats[3].base_stat;
-            let totalDef = (second.stats[2].base_stat + second.stats[4].base_stat) * 8;
-            let totalDmg = totalAtt - totalDef;
+            let totalDef = (second.stats[2].base_stat + second.stats[4].base_stat) * 0.8;
+            totalDmg = totalAtt - totalDef;
 
-            if(totalDmg <= 10){
+            if(totalDmg < 10){
                 totalDmg = 10;
-            }
+            }   
+
+            console.log(totalAtt, totalDef, totalDmg);
 
             secondHP = secondHP - totalDmg;
 
             console.log("secondHP = " + secondHP);
+
+            const attackInfo = {
+                attacker:first.name, 
+                damage:totalDmg,
+                defender: second.name, 
+                hpLeft: secondHP
+            }
+            fightInfo.push(attackInfo);
         }
 
         const secondAttack = () =>{
             let totalAtt = second.stats[1].base_stat + second.stats[3].base_stat;
-            let totalDef = (first.stats[2].base_stat + first.stats[4].base_stat) * 8;
-            let totalDmg = totalAtt - totalDef;
+            let totalDef = (first.stats[2].base_stat + first.stats[4].base_stat) * 0.8;
+            totalDmg = totalAtt - totalDef;
 
             if(totalDmg < 10){
                 totalDmg = 10;
             }
 
+            console.log(totalAtt, totalDef, totalDmg);
+
             firstHP = firstHP - totalDmg;
 
             console.log("firstHP = " + firstHP);
-        }
 
-        while(firstHP > 0 && secondHP > 0) {
+            const attackInfo = {
+                attacker:first.name, 
+                damage:totalDmg,
+                defender: second.name, 
+                hpLeft: secondHP
+            }
+            fightInfo.push(attackInfo);
+        }
+        
+        const battleEvents = document.getElementById("battle_event");
+        const battleEventsA = document.getElementById("battle_eventA");
+        const battleEventsB = document.getElementById("battle_eventB");
+
+/*         const announce = (attacker, defender, defenderHP, totalDmg)=>{
+            if(defenderHP < 0){
+                defenderHP = 0;
+            }
+
+            battleEvents.classList.remove("display_none");
+            battleEventsA.textContent = "Bam!";
+            battleEventsA.classList.remove("visibility_hidden");
+            setTimeout(()=>{
+                battleEventsB.textContent = `${attacker.name} attacked for ${totalDmg} damage.`;
+                battleEventsB.classList.remove("visibility_hidden");
+                setTimeout(()=>{
+                    battleEventsB.textContent = `${defender.name} has ${defenderHP} HP left.`;
+                    setTimeout(()=>{
+                        battleEvents.classList.add("display_none");
+                        battleEventsA.classList.add("visibility_hidden");
+                        battleEventsB.classList.add("visibility_hidden");
+                    },1000)
+                },1200)
+            },1000)
+        } */
+
+        while(firstHP > 0 && secondHP > 0){
             firstAttack();
+
             if(secondHP > 0){
                 secondAttack();
             }
-            console.log("Round Completed");
         }
-
-        console.log("Fight End");
     }
 }
 
@@ -387,11 +442,10 @@ const highlightStats = ()=>{
     })
 }
 
-const eventAnnounce = (eventTarget) => {
-    const eventDisplay = document.getElementById("battle_event");
-    const eventA = document.getElementById("battle_eventA");
-    const eventB = document.getElementById("battle_eventB");
+const fightSequence = () => {
+    //reseta fight info
 }
+
   
 
 
@@ -417,3 +471,26 @@ for(let i = 1; i <= 151; i++ ){
 
     highlightStats();
 }) */
+
+
+/* setTimeout(()=>{
+    if(fighter === first){
+        eventB.textContent = `${first.name} attacked ${second.name} for ${dmg} HP.`;
+        eventB.classList.toggle("display_none");
+        setTimeout(()=>{
+            eventB.classList.toggle("display_none"); 
+            eventB.textContent = "";
+        },2000) 
+        console.log("1");
+    }
+
+    else if (fighter === second) {
+        eventB.textContent = `${second.name} attacked ${first.name} for ${dmg} HP.`;
+        eventB.classList.toggle("display_none");
+        setTimeout(()=>{
+            eventB.classList.toggle("display_none"); 
+            eventB.textContent = "";
+        },2000)
+        console.log("2");
+    }
+},1000); */

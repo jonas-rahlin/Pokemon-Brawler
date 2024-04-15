@@ -36,3 +36,6 @@ Hinder: id för selectorer som används, som ska matchas för att appenda rätt 
     felet är att funktionen körs innan pokemon arr har hunnit skapats.
 
     vill separera display func och battle mekanik.
+
+
+    hade problem med multiplier, som gav orunda tal, valde därför att köra math.raound på totaldmg, eftersom jag ville följa instruktionerna och ancända multipliern.
