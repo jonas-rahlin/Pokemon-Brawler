@@ -1,1 +1,4 @@
 bygg dom sekevens från fight info arrayen
+
+
+fixa pokemon move1 attack displayad.

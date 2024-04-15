@@ -8,10 +8,12 @@ let winnerArr = [];
 //Array for storing Fight Information
 let fightInfo = [];
 
+//Variables for Fight Event DOM display
 const battleEvent = document.getElementById("battle_event");
 const battleEventA = document.getElementById("battle_eventA");
 const battleEventB = document.getElementById("battle_eventB");
 
+//Function for displaying Fight Events in the DOM.
 const fightAnnouncement = async (i) =>{
     let attacker = i.attacker;
     let defender = i.defender;
@@ -19,7 +21,6 @@ const fightAnnouncement = async (i) =>{
     let hpLeft = i.hpLeft;
 
     //Round Sequence
-
     const sequencePromise = () =>{
         return new Promise ((resolve) => {
             setTimeout(()=>{
@@ -50,7 +51,11 @@ const fightAnnouncement = async (i) =>{
                             battleEventB.classList.add("visibility_hidden");
                             battleEventA.textContent = "";
                             battleEventB.textContent = "";
+
+                            //Resolve Promise
+                            resolve();
                         },3000)
+                        
                     }, 2000)
                },1000)
             },500)
@@ -58,6 +63,13 @@ const fightAnnouncement = async (i) =>{
     }
     await sequencePromise();
 }
+
+//Function for running fightAnnouncement() on each fightInfo element
+const initiateFightAnnouncement = async () => {
+    for (const round of fightInfo) {
+        await fightAnnouncement(round);
+    }
+};
 
 
 
