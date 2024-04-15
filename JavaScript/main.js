@@ -1,9 +1,51 @@
+async function fetchPokemonData() {
+    try {
+        const promises = [];
+        for (let i = 1; i <= 151; i++) {
+            const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+            promises.push(fetch(url).then((res) => {
+                if (!res.ok) {
+                    throw new Error(`Error! Status: ${res.status}`);
+                }
+                return res.json();
+            }));
+        }
+
+        const results = await Promise.all(promises);
+        results.forEach((e) => {
+            const pokemon = new Pokemon(
+                e.name,
+                e.id,
+                e.sprites.front_default,
+                e.types,
+                e.weight,
+                e.height,
+                e.stats
+            );
+            pokemonArr.push(pokemon);
+            createSelections(pokemon);
+        });
+
+        randomPokemon();
+        highlightStats();
+
+    } catch (error) {
+        console.error("Error fetching Pokémon data:", error);
+    }
+}
+
+fetchPokemonData();
+
+
+
+
+
 //Fetch API Data.
-const promises = [];
+/* const promises = [];
 for(let i = 1; i <= 151; i++ ){
     const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
     promises.push(fetch(url).then((res) => res.json()));
-}
+} */
 
 //Create Pokemon Class.
 class Pokemon {
@@ -133,7 +175,7 @@ pokemonSelectorB.addEventListener("change", ()=>{
 //Fill Array of Pokemons from data.
 //Create pokemon DOM Selections.
 //Compare active pokemons in winnerArr.
-Promise.all(promises).then((results) => {
+/* Promise.all(promises).then((results) => {
     results.forEach((e)=>{
         const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
         pokemonArr.push(pokemon);
@@ -143,7 +185,7 @@ Promise.all(promises).then((results) => {
     randomPokemon();
 
     highlightStats();
-})
+}) */
 
 //Create and append DOM <Option> elements for all Pokemons.
 const createSelections = (e) => {

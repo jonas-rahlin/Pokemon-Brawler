@@ -25,6 +25,8 @@ Gjorde klart JS för del 1.
 
 Startade styling för del2.
 
+funktion för pokemon battle, vill separera display func och battle mekanik.
+
 
 Hinder: id för selectorer som används, som ska matchas för att appenda rätt div
     hur trigga eventlistner genom javascript istälelt för i domen
@@ -32,3 +34,5 @@ Hinder: id för selectorer som används, som ska matchas för att appenda rätt 
 
 
     felet är att funktionen körs innan pokemon arr har hunnit skapats.
+
+    vill separera display func och battle mekanik.
