@@ -8,6 +8,63 @@ let winnerArr = [];
 //Array for storing Fight Information
 let fightInfo = [];
 
+const battleEvent = document.getElementById("battle_event");
+const battleEventA = document.getElementById("battle_eventA");
+const battleEventB = document.getElementById("battle_eventB");
+
+const fightAnnouncement = async (i) =>{
+    let attacker = i.attacker;
+    let defender = i.defender;
+    let damage = i.damage;
+    let hpLeft = i.hpLeft;
+
+    //Round Sequence
+
+    const sequencePromise = () =>{
+        return new Promise ((resolve) => {
+            setTimeout(()=>{
+                //Show Event A
+                battleEvent.classList.remove("display_none");
+                battleEventA.textContent = "BAM!";
+                battleEventA.classList.remove("visibility_hidden");
+        
+                //Show Event B1
+                setTimeout(()=>{
+                    battleEventB.textContent = `${attacker} hit ${defender} for ${damage} dmg.`;
+                    battleEventB.classList.remove("visibility_hidden");
+        
+                    //Hide Event B1
+                    setTimeout(()=>{
+                        battleEventB.classList.add("visibility_hidden");
+        
+                        //Show Event B2
+                        setTimeout(()=>{
+                            battleEventB.textContent = `${defender} has ${hpLeft} HP left.`;
+                            battleEventB.classList.remove("visibility_hidden");
+                        },1000)
+        
+                        //End Round
+                        setTimeout(()=>{
+                            battleEvent.classList.add("display_none");
+                            battleEventA.classList.add("visibility_hidden");
+                            battleEventB.classList.add("visibility_hidden");
+                            battleEventA.textContent = "";
+                            battleEventB.textContent = "";
+                        },3000)
+                    }, 2000)
+               },1000)
+            },500)
+        })
+    }
+    await sequencePromise();
+}
+
+
+
+
+
+
+
 //Initiate Pokemon Creation
 fetchPokemonData();
 
@@ -115,7 +172,7 @@ class Pokemon {
 
             const attackInfo = {
                 attacker:first.name, 
-                damage:totalDmg,
+                damage:Math.round(totalDmg),
                 defender: second.name, 
                 hpLeft: secondHP
             }
