@@ -1,53 +1,33 @@
-async function fetchPokemonData() {
-    try {
-        const promises = [];
-        for (let i = 1; i <= 151; i++) {
-            const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
-            promises.push(fetch(url).then((res) => {
-                if (!res.ok) {
-                    throw new Error(`Error! Status: ${res.status}`);
-                }
-                return res.json();
-            }));
-        }
+//Arrays for storing pokemons.
+const pokemonArr = [];
+let activePokemons = [];
 
-        const results = await Promise.all(promises);
-        results.forEach((e) => {
-            const pokemon = new Pokemon(
-                e.name,
-                e.id,
-                e.sprites.front_default,
-                e.types,
-                e.weight,
-                e.height,
-                e.stats
-            );
-            pokemonArr.push(pokemon);
-            createSelections(pokemon);
-        });
+//Array for tracking winner stats.
+let winnerArr = [];
 
-        randomPokemon();
-        highlightStats();
-
-    } catch (error) {
-        console.error("Error fetching Pokémon data:", error);
-    }
-}
-
+//Initiate Pokemon Creation
 fetchPokemonData();
 
+//Pokemon Selector DOM Variables.
+const pokemonSelectorA = document.getElementById("pokemon_SelectA");
+const pokemonSelectorB = document.getElementById("pokemon_SelectB");
+//Add eventListners for triggering pokemon DOM creation.
+pokemonSelectorA.addEventListener("change", ()=>{
+    const selectedPokemon = pokemonSelectorA.value;
+    const selectorID = pokemonSelectorA;
+    createPokemon(pokemonArr[selectedPokemon], selectorID);
+    highlightStats();
+})
+pokemonSelectorB.addEventListener("change", ()=>{
+    const selectedPokemon = pokemonSelectorB.value;
+    const selectorID = pokemonSelectorB;
+    createPokemon(pokemonArr[selectedPokemon], selectorID);
+    highlightStats();
+})
 
 
-
-
-//Fetch API Data.
-/* const promises = [];
-for(let i = 1; i <= 151; i++ ){
-    const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
-    promises.push(fetch(url).then((res) => res.json()));
-} */
-
-//Create Pokemon Class.
+/* Classes and Functions. */
+//Pokemon Class.
 class Pokemon {
     constructor(name, id, img, type, weight, height, stats) {
         this.name = name;
@@ -147,45 +127,47 @@ class Pokemon {
     }
 }
 
-//Pokemon Selector DOM Variables
-const pokemonSelectorA = document.getElementById("pokemon_SelectA");
-const pokemonSelectorB = document.getElementById("pokemon_SelectB");
+//Fetch API Data and create array of pokemons.
+async function fetchPokemonData() {
+    try {
+        //Fetch API Data.
+        const promises = [];
+        for (let i = 1; i <= 151; i++) {
+            const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+            promises.push(fetch(url).then((res) => {
+                if (!res.ok) {
+                    throw new Error(`Error! Status: ${res.status}`);
+                }
+                return res.json();
+            }));
+        }
 
-//Arrays for storing pokemons
-const pokemonArr = [];
-let activePokemons = [];
+        //Create Pokemons from API Data.
+        const results = await Promise.all(promises);
+        results.forEach((e) => {
+            const pokemon = new Pokemon(
+                e.name,
+                e.id,
+                e.sprites.front_default,
+                e.types,
+                e.weight,
+                e.height,
+                e.stats
+            );
+            pokemonArr.push(pokemon);
 
-//Array for tracking winner stats
-let winnerArr = [];
+            //Generate DOM Selection elements for each Pokemon
+            createSelections(pokemon);
+        });
 
-//EventListners for triggering pokemon creation
-pokemonSelectorA.addEventListener("change", ()=>{
-    const selectedPokemon = pokemonSelectorA.value;
-    const selectorID = pokemonSelectorA;
-    createPokemon(pokemonArr[selectedPokemon], selectorID);
-    highlightStats();
-})
-pokemonSelectorB.addEventListener("change", ()=>{
-    const selectedPokemon = pokemonSelectorB.value;
-    const selectorID = pokemonSelectorB;
-    createPokemon(pokemonArr[selectedPokemon], selectorID);
-    highlightStats();
-})
+        //Select random Pokemons and apply stats highlighting
+        randomPokemon();
+        highlightStats();
 
-//Fill Array of Pokemons from data.
-//Create pokemon DOM Selections.
-//Compare active pokemons in winnerArr.
-/* Promise.all(promises).then((results) => {
-    results.forEach((e)=>{
-        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
-        pokemonArr.push(pokemon);
-        createSelections(pokemon);
-    });
-
-    randomPokemon();
-
-    highlightStats();
-}) */
+    } catch (error) {
+        console.error("Error fetching Pokémon data:", error);
+    }
+}
 
 //Create and append DOM <Option> elements for all Pokemons.
 const createSelections = (e) => {
@@ -339,7 +321,7 @@ const createPokemon = (pokemon, selectorID, )=>{
     }
 }
 
-//Select Random Pokemons
+//Select Random Pokemons.
 const randomPokemon = ()=>{
     pokemonSelectorA.selectedIndex = Math.floor(Math.random() * 151) + 1;
     pokemonSelectorA.dispatchEvent(new Event('change'));
@@ -347,7 +329,7 @@ const randomPokemon = ()=>{
     pokemonSelectorB.dispatchEvent(new Event('change'));
 }
 
-//Highlight Winning Stats
+//Highlight Winning Stats.
 const highlightStats = ()=>{
     const pokemon = [...document.querySelectorAll(".pokemon")];
 
@@ -415,3 +397,23 @@ const eventAnnounce = (eventTarget) => {
 
 
 
+//Fetch API Data.
+/* const promises = [];
+for(let i = 1; i <= 151; i++ ){
+    const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+    promises.push(fetch(url).then((res) => res.json()));
+} */
+//Fill Array of Pokemons from data.
+//Create pokemon DOM Selections.
+//Compare active pokemons in winnerArr.
+/* Promise.all(promises).then((results) => {
+    results.forEach((e)=>{
+        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
+        pokemonArr.push(pokemon);
+        createSelections(pokemon);
+    });
+
+    randomPokemon();
+
+    highlightStats();
+}) */
