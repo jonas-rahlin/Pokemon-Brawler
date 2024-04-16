@@ -31,22 +31,20 @@ const initiateFightAnnouncement = async () => {
 
     //Round Sequence
     const sequencePromise = async () => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-    
-        // Show Event A
+        //Start sequence
         battleEvent.classList.remove("display_none");
+
+        // Show Event A
         battleEventA.textContent = "BAM!";
         battleEventA.classList.remove("visibility_hidden");
         
-        await new Promise(resolve => setTimeout(resolve, 1000));
-    
         // Show Event B1
+        await new Promise(resolve => setTimeout(resolve, 1000));
         battleEventB.textContent = `${attacker} used "${attack}" on ${defender} for ${damage} dmg.`;
         battleEventB.classList.remove("visibility_hidden");
         
-        await new Promise(resolve => setTimeout(resolve, 2000));
-    
         // Hide Event B1
+        await new Promise(resolve => setTimeout(resolve, 2000));
         battleEventB.classList.add("visibility_hidden");
     
         // Show Event B2
@@ -62,13 +60,13 @@ const initiateFightAnnouncement = async () => {
         battleEventA.classList.add("visibility_hidden");
         battleEventB.classList.add("visibility_hidden");
 
-        if(hpLeft === 0){
+        if(hpLeft <= 0){
             await new Promise(resolve => setTimeout(resolve, 1000));
             battleEventA.textContent = `${attacker} wins!`;
             battleEvent.classList.remove("display_none");
             battleEventA.classList.remove("visibility_hidden");
 
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            await new Promise(resolve => setTimeout(resolve, 2000));
             battleEvent.classList.add("display_none");
             battleEventA.classList.add("visibility_hidden");
         }
@@ -217,6 +215,7 @@ class Pokemon {
 
             const attackInfo = {
                 attacker:second.name, 
+                attack: second.attack,
                 damage:Math.round(totalDmg),
                 defender: first.name, 
                 hpLeft: firstHP
@@ -265,7 +264,7 @@ async function fetchPokemonData() {
                 e.weight,
                 e.height,
                 e.stats,
-                e.moves[0].move.name
+                e.moves[0].move.name 
             );
             pokemonArr.push(pokemon);
 
