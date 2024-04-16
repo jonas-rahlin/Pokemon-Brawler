@@ -17,6 +17,10 @@ const battleEventB = document.getElementById("battle_eventB");
 
 //Function for running fightAnnouncement() on each fightInfo element
 const initiateFightAnnouncement = async () => {
+    //Reset Text Content
+    battleEventA.textContent = "";
+    battleEventB.textContent = "";
+
     //Function for displaying Fight Events in the DOM.
     const fightAnnouncement = async (i) =>{
     let attacker = i.attacker;
@@ -25,48 +29,51 @@ const initiateFightAnnouncement = async () => {
     let hpLeft = i.hpLeft;
 
     //Round Sequence
-    const sequencePromise = () =>{
-        return new Promise ((resolve) => {
-            setTimeout(()=>{
-                //Show Event A
-                battleEvent.classList.remove("display_none");
-                battleEventA.textContent = "BAM!";
-                battleEventA.classList.remove("visibility_hidden");
+    const sequencePromise = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500));
+    
+        // Show Event A
+        battleEvent.classList.remove("display_none");
+        battleEventA.textContent = "BAM!";
+        battleEventA.classList.remove("visibility_hidden");
         
-                //Show Event B1
-                setTimeout(()=>{
-                    battleEventB.textContent = `${attacker} hit ${defender} for ${damage} dmg.`;
-                    battleEventB.classList.remove("visibility_hidden");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    
+        // Show Event B1
+        battleEventB.textContent = `${attacker} hit ${defender} for ${damage} dmg.`;
+        battleEventB.classList.remove("visibility_hidden");
         
-                    //Hide Event B1
-                    setTimeout(()=>{
-                        battleEventB.classList.add("visibility_hidden");
-        
-                        //Show Event B2
-                        setTimeout(()=>{
-                            if(hpLeft <= 0){
-                                hpLeft = 0;
-                            }
-                            battleEventB.textContent = `${defender} has ${hpLeft} HP left.`;
-                            battleEventB.classList.remove("visibility_hidden");
-                        },1000)
-        
-                        //End Round
-                        setTimeout(()=>{
-                            battleEvent.classList.add("display_none");
-                            battleEventA.classList.add("visibility_hidden");
-                            battleEventB.classList.add("visibility_hidden");
-                            battleEventA.textContent = "";
-                            battleEventB.textContent = "";
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    
+        // Hide Event B1
+        battleEventB.classList.add("visibility_hidden");
+    
+        // Show Event B2
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (hpLeft <= 0) {
+            hpLeft = 0;
+        }
+        battleEventB.textContent = `${defender} has ${hpLeft} HP left.`;
+        battleEventB.classList.remove("visibility_hidden");
+    
+        // End Round
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        battleEvent.classList.add("display_none");
+        battleEventA.classList.add("visibility_hidden");
+        battleEventB.classList.add("visibility_hidden");
 
-                            //Resolve Promise
-                            resolve();
-                        },3000)
-                    }, 2000)
-               },1000)
-            },500)
-        })
-    }
+        if(hpLeft === 0){
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            battleEventA.textContent = `${attacker} wins!`;
+            battleEvent.classList.remove("display_none");
+            battleEventA.classList.remove("visibility_hidden");
+
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            battleEvent.classList.add("display_none");
+            battleEventA.classList.add("visibility_hidden");
+        }
+    };
+    
     await sequencePromise();
     }
     
