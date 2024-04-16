@@ -1,5 +1,7 @@
-//Arrays for storing pokemons.
+//Array for storing all created pokemons.
 const pokemonArr = [];
+
+//Array for storing selected Pokemons
 let activePokemons = [];
 
 //Array for tracking winner stats.
@@ -8,85 +10,29 @@ let winnerArr = [];
 //Array for storing Fight Information
 let fightInfo = [];
 
-//Variables for Fight Event DOM display
-const battleEvent = document.getElementById("battle_event");
-const battleEventA = document.getElementById("battle_eventA");
-const battleEventB = document.getElementById("battle_eventB");
-
-
-
-//Function for running fightAnnouncement() on each fightInfo element
-const initiateFightAnnouncement = async () => {
-    //Reset Text Content
-    battleEventA.textContent = "";
-    battleEventB.textContent = "";
-
-    //Function for displaying Fight Events in the DOM.
-    const fightAnnouncement = async (i) =>{
-    let attacker = i.attacker;
-    let defender = i.defender;
-    let damage = i.damage;
-    let hpLeft = i.hpLeft;
-    let attack = i.attack;
-
-    //Round Sequence
-    const sequencePromise = async () => {
-        //Start sequence
-        battleEvent.classList.remove("display_none");
-
-        // Show Event A
-        battleEventA.textContent = "BAM!";
-        battleEventA.classList.remove("visibility_hidden");
-        
-        // Show Event B1
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        battleEventB.textContent = `${attacker} used "${attack}" on ${defender} for ${damage} dmg.`;
-        battleEventB.classList.remove("visibility_hidden");
-        
-        // Hide Event B1
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        battleEventB.classList.add("visibility_hidden");
-    
-        // Show Event B2
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        if (hpLeft <= 0) {
-            hpLeft = 0;
-        }
-        battleEventB.textContent = `${defender} has ${hpLeft} HP left.`;
-        battleEventB.classList.remove("visibility_hidden");
-    
-        // End Round
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        battleEventA.classList.add("visibility_hidden");
-        battleEventB.classList.add("visibility_hidden");
-
-        if(hpLeft <= 0){
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            battleEventA.textContent = `${attacker} wins!`;
-            battleEvent.classList.remove("display_none");
-            battleEventA.classList.remove("visibility_hidden");
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            battleEvent.classList.add("display_none");
-            battleEventA.classList.add("visibility_hidden");
-        }
-    };
-    
-    await sequencePromise();
-    }
-    
-    for (const round of fightInfo) {
-        await fightAnnouncement(round);
-    }
-};
-
-//Initiate Pokemon Creation
-fetchPokemonData();
+//Run initial functions
+fetchPokemonData()
+  .then(() => {
+    //Create Selections for all Pokemons
+    const promises = [];
+    pokemonArr.forEach((pokemon) => {
+      promises.push(createSelections(pokemon));
+    });
+    return Promise.all(promises);
+  })
+  .then(() => {
+    //Select random Pokemons
+    return randomPokemon();
+  })
+  .then(() => {
+    //Highlight Winner stats in DOM
+    return highlightStats();
+  });
 
 //Pokemon Selector DOM Variables.
 const pokemonSelectorA = document.getElementById("pokemon_SelectA");
 const pokemonSelectorB = document.getElementById("pokemon_SelectB");
-//EventListners for triggering pokemon DOM creation.
+//Event listeners - Trigger Pokemon DOM creation
 pokemonSelectorA.addEventListener("change", ()=>{
     const selectedPokemon = pokemonSelectorA.value;
     const selectorID = pokemonSelectorA;
@@ -102,15 +48,18 @@ pokemonSelectorB.addEventListener("change", ()=>{
 
 //Battle Btn DOM Variable
 const battleBtn = document.getElementById("battle_Btn");
-//Eventlistener to start combat sequence
+//Eventlistener - Start combat sequence
 battleBtn.addEventListener("click", ()=>{
     activePokemons[0].fightSequence(activePokemons[1]);
     initiateFightAnnouncement();
 })
 
+
 /* Classes and Functions. */
-//Pokemon Class.
+/* --------------------- */
+//Pokemon Class
 class Pokemon {
+    //Constructor template
     constructor(name, id, img, type, weight, height, stats, attack) {
         this.name = name;
         this.id = id;
@@ -122,7 +71,9 @@ class Pokemon {
         this.attack = attack;
     }
 
+    //Compare selected Pokemons
     comparePokemons(comparedPokemon) {
+        //Height
         const results = [];
         if(this.height > comparedPokemon.height) {
             results.push(this.id);
@@ -132,6 +83,7 @@ class Pokemon {
             results.push(0);
         }
 
+        //Weight
         if(this.weight > comparedPokemon.weight) {
             results.push(this.id);
         } else if(this.weight < comparedPokemon.weight) {
@@ -140,6 +92,7 @@ class Pokemon {
             results.push(0);
         }
 
+        //Stats
         this.stats.forEach((stat, index) => {
             const comparedStat = comparedPokemon.stats[index];
 
@@ -155,10 +108,12 @@ class Pokemon {
         return results;
     }
 
+    //Fight Sequence
     fightSequence(opponent) {
         let first;
         let second;
 
+        //Determine first attacker
         if(this.stats[5].base_stat >= opponent.stats[5].base_stat){
             first = {...this};
             second = {...opponent};
@@ -167,52 +122,44 @@ class Pokemon {
             second = {...this};
         }
 
+        //Set HP
         let firstHP = first.stats[0].base_stat;
         let secondHP = second.stats[0].base_stat;
         let totalDmg;
-        console.log(firstHP, secondHP);
 
+        //First attack
         const firstAttack = () =>{
+            //Calculate DMG
             let totalAtt = first.stats[1].base_stat + first.stats[3].base_stat;
             let totalDef = (second.stats[2].base_stat + second.stats[4].base_stat) * 0.8;
             totalDmg = totalAtt - totalDef;
-
             if(totalDmg < 10){
                 totalDmg = 10;
-            }   
-
-            console.log(totalAtt, totalDef, totalDmg);
-
+            }
             secondHP = secondHP - totalDmg;
 
-            console.log("secondHP = " + secondHP);
-
+            //Store attack info
             const attackInfo = {
                 attacker:first.name,
                 attack: first.attack,
                 damage:Math.round(totalDmg),
                 defender: second.name, 
                 hpLeft: secondHP
-                
             }
             fightInfo.push(attackInfo);
         }
 
         const secondAttack = () =>{
+            //Calculate DMG
             let totalAtt = second.stats[1].base_stat + second.stats[3].base_stat;
             let totalDef = (first.stats[2].base_stat + first.stats[4].base_stat) * 0.8;
             totalDmg = totalAtt - totalDef;
-
             if(totalDmg < 10){
                 totalDmg = 10;
             }
-
-            console.log(totalAtt, totalDef, totalDmg);
-
             firstHP = firstHP - totalDmg;
 
-            console.log("firstHP = " + firstHP);
-
+            //Store attack info
             const attackInfo = {
                 attacker:second.name, 
                 attack: second.attack,
@@ -222,14 +169,10 @@ class Pokemon {
             }
             fightInfo.push(attackInfo);
         }
-        
-        const battleEvents = document.getElementById("battle_event");
-        const battleEventsA = document.getElementById("battle_eventA");
-        const battleEventsB = document.getElementById("battle_eventB");
 
+        //Run Attacks until one Pokemon is defeated
         while(firstHP > 0 && secondHP > 0){
             firstAttack();
-
             if(secondHP > 0){
                 secondAttack();
             }
@@ -237,10 +180,10 @@ class Pokemon {
     }
 }
 
-//Fetch API Data and create array of pokemons.
+//Fetch API Data and create Pokemons
 async function fetchPokemonData() {
     try {
-        //Fetch API Data.
+        //Fetch API Data
         const promises = [];
         for (let i = 1; i <= 151; i++) {
             const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
@@ -252,7 +195,7 @@ async function fetchPokemonData() {
             }));
         }
 
-        //Create Pokemons from API Data.
+        //Create Pokemons from API Data
         const results = await Promise.all(promises);
         console.log(results);
         results.forEach((e) => {
@@ -266,22 +209,16 @@ async function fetchPokemonData() {
                 e.stats,
                 e.moves[0].move.name 
             );
+            //Store Pokemons
             pokemonArr.push(pokemon);
-
-            //Generate DOM Selection elements for each Pokemon
-            createSelections(pokemon);
         });
-
-        //Select random Pokemons and apply stats highlighting
-        randomPokemon();
-        highlightStats();
 
     } catch (error) {
         console.error("Error fetching Pokémon data:", error);
     }
 }
 
-//Create and append DOM <Option> elements for all Pokemons.
+//Create and append DOM <Option> elements for all Pokemons
 const createSelections = (e) => {
     let optionA = document.createElement("option");
     optionA.value = e.id-1;
@@ -298,9 +235,9 @@ const createSelections = (e) => {
     selectorB.appendChild(optionB);
 }
 
-//Creating and appending DOM elements for selected Pokemons.
+//Creating and appending DOM elements for selected Pokemons
 const createPokemon = (pokemon, selectorID, )=>{
-    //Variables
+    //DOM Variables
     const pokemonDisplayA = document.getElementById("pokemon_DisplayA");
     const pokemonDisplayB = document.getElementById("pokemon_DisplayB");
     const pokemonA = document.getElementById("pokemonA");
@@ -424,8 +361,10 @@ const createPokemon = (pokemon, selectorID, )=>{
     pSpeed.textContent = `Speed: ${pokemon.stats[5].base_stat}`;
     pStats.appendChild(pSpeed);
 
+    //Append Stats
     pokemonDiv.appendChild(pStats);
 
+    //Append DOM Pokemons
     if(selectorID === pokemonSelectorA){
         pokemonDisplayA.appendChild(pokemonDiv);
     } else {
@@ -433,7 +372,7 @@ const createPokemon = (pokemon, selectorID, )=>{
     }
 }
 
-//Select Random Pokemons.
+//Select random Pokemons
 const randomPokemon = ()=>{
     pokemonSelectorA.selectedIndex = Math.floor(Math.random() * 151) + 1;
     pokemonSelectorA.dispatchEvent(new Event('change'));
@@ -441,11 +380,11 @@ const randomPokemon = ()=>{
     pokemonSelectorB.dispatchEvent(new Event('change'));
 }
 
-//Highlight Winning Stats.
+//Highlight Winning Stats
 const highlightStats = ()=>{
     const pokemon = [...document.querySelectorAll(".pokemon")];
 
-    //Remove Highlights
+    //Remove highlights
     document.querySelectorAll(".winner_stat").forEach(element => {
         element.classList.remove("winner_stat");
     });
@@ -454,7 +393,7 @@ const highlightStats = ()=>{
     });
 
     pokemon.forEach((element)=>{
-        //Set Active Pokemons and Winner values
+        //Set active Pokemons and Winner values
         activePokemons[0] = pokemonArr[pokemonSelectorA.value];
         activePokemons[1] = pokemonArr[pokemonSelectorB.value];
         winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
@@ -469,7 +408,7 @@ const highlightStats = ()=>{
         let domDefS = element.querySelector('.pokemon_defS');
         let domSpeed = element.querySelector('.pokemon_speed');
 
-        //Highlight Attributes
+        //Highlight attributes
         if(element.dataset.id === winnerArr[0].toString()){
             domHeight.classList.add("winner_attr");
         }
@@ -477,7 +416,7 @@ const highlightStats = ()=>{
             domWeight.classList.add("winner_attr");
         }
 
-        //Highlight Stats
+        //Highlight stats
         if(element.dataset.id === winnerArr[2].toString()){
             domHp.classList.add("winner_stat");
         }
@@ -499,6 +438,73 @@ const highlightStats = ()=>{
     })
 }
 
-const fightSequence = () => {
-    //reseta fight info
-}
+//Fight DOM Event
+const initiateFightAnnouncement = async () => {
+    //Variables for Fight event DOM Display
+    const battleEvent = document.getElementById("battle_event");
+    const battleEventA = document.getElementById("battle_eventA");
+    const battleEventB = document.getElementById("battle_eventB");
+    
+    //Reset announcement
+    battleEventA.textContent = "";
+    battleEventB.textContent = "";
+
+    //Display Fight events in DOM
+    const fightAnnouncement = async (i) =>{
+        //Determine stats
+        let attacker = i.attacker;
+        let defender = i.defender;
+        let damage = i.damage;
+        let hpLeft = i.hpLeft;
+        let attack = i.attack;
+
+        //Round Sequence
+        const sequencePromise = async () => {
+            //Start sequence
+            battleEvent.classList.remove("display_none");
+
+            // Show Event A
+            battleEventA.textContent = "BAM!";
+            
+            // Show Event B1
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            battleEventB.textContent = `${attacker} used "${attack}" on ${defender} for ${damage} dmg.`;
+            
+            // Hide Event B1
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            battleEventB.textContent = "";
+        
+            // Show Event B2
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (hpLeft <= 0) {
+                hpLeft = 0;
+            }
+            battleEventB.textContent = `${defender} has ${hpLeft} HP left.`;
+
+            //Pause announcement
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            battleEventA.textContent = "";
+            battleEventB.textContent = "";
+
+            //Announce Winner
+            if(hpLeft <= 0){
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                battleEventA.textContent = `${attacker} wins!`;
+                battleEvent.classList.remove("display_none");
+
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                battleEvent.classList.add("display_none");
+            } else{
+                //Pause announcement
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        };
+        //Run the Round sequence
+        await sequencePromise();
+    }
+    
+    //Run announcement for each round
+    for (const round of fightInfo) {
+        await fightAnnouncement(round);
+    }
+};

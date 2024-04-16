@@ -45,3 +45,5 @@ Hinder: id för selectorer som används, som ska matchas för att appenda rätt 
 
 
 vart ska jag definiera dom announcement?
+
+bugg som gör att anouncement loopas 2ggr ibland (vet ej varför).
