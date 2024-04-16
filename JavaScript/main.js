@@ -27,6 +27,7 @@ const initiateFightAnnouncement = async () => {
     let defender = i.defender;
     let damage = i.damage;
     let hpLeft = i.hpLeft;
+    let attack = i.attack;
 
     //Round Sequence
     const sequencePromise = async () => {
@@ -40,7 +41,7 @@ const initiateFightAnnouncement = async () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
     
         // Show Event B1
-        battleEventB.textContent = `${attacker} hit ${defender} for ${damage} dmg.`;
+        battleEventB.textContent = `${attacker} used "${attack}" on ${defender} for ${damage} dmg.`;
         battleEventB.classList.remove("visibility_hidden");
         
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -113,7 +114,7 @@ battleBtn.addEventListener("click", ()=>{
 /* Classes and Functions. */
 //Pokemon Class.
 class Pokemon {
-    constructor(name, id, img, type, weight, height, stats) {
+    constructor(name, id, img, type, weight, height, stats, attack) {
         this.name = name;
         this.id = id;
         this.img = img;
@@ -121,6 +122,7 @@ class Pokemon {
         this.weight = weight;
         this.height = height;
         this.stats = stats;
+        this.attack = attack;
     }
 
     comparePokemons(comparedPokemon) {
@@ -189,10 +191,12 @@ class Pokemon {
             console.log("secondHP = " + secondHP);
 
             const attackInfo = {
-                attacker:first.name, 
+                attacker:first.name,
+                attack: first.attack,
                 damage:Math.round(totalDmg),
                 defender: second.name, 
                 hpLeft: secondHP
+                
             }
             fightInfo.push(attackInfo);
         }
@@ -252,6 +256,7 @@ async function fetchPokemonData() {
 
         //Create Pokemons from API Data.
         const results = await Promise.all(promises);
+        console.log(results);
         results.forEach((e) => {
             const pokemon = new Pokemon(
                 e.name,
@@ -260,7 +265,8 @@ async function fetchPokemonData() {
                 e.types,
                 e.weight,
                 e.height,
-                e.stats
+                e.stats,
+                e.moves[0].move.name
             );
             pokemonArr.push(pokemon);
 
