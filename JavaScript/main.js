@@ -59,7 +59,6 @@ const initiateFightAnnouncement = async () => {
     
         // End Round
         await new Promise(resolve => setTimeout(resolve, 3000));
-        battleEvent.classList.add("display_none");
         battleEventA.classList.add("visibility_hidden");
         battleEventB.classList.add("visibility_hidden");
 
