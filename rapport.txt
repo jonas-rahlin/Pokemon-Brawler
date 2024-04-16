@@ -42,3 +42,6 @@ Hinder: id för selectorer som används, som ska matchas för att appenda rätt 
 
     stora problem med dom display sekvensen av fighten när det kommer till scope och parametrar, beslutade mig
     till slut att storea varje attack i en array och skapa sekvensen utifårn den.
+
+
+vart ska jag definiera dom announcement?

@@ -13,8 +13,12 @@ const battleEvent = document.getElementById("battle_event");
 const battleEventA = document.getElementById("battle_eventA");
 const battleEventB = document.getElementById("battle_eventB");
 
-//Function for displaying Fight Events in the DOM.
-const fightAnnouncement = async (i) =>{
+
+
+//Function for running fightAnnouncement() on each fightInfo element
+const initiateFightAnnouncement = async () => {
+    //Function for displaying Fight Events in the DOM.
+    const fightAnnouncement = async (i) =>{
     let attacker = i.attacker;
     let defender = i.defender;
     let damage = i.damage;
@@ -40,6 +44,9 @@ const fightAnnouncement = async (i) =>{
         
                         //Show Event B2
                         setTimeout(()=>{
+                            if(hpLeft <= 0){
+                                hpLeft = 0;
+                            }
                             battleEventB.textContent = `${defender} has ${hpLeft} HP left.`;
                             battleEventB.classList.remove("visibility_hidden");
                         },1000)
@@ -55,27 +62,18 @@ const fightAnnouncement = async (i) =>{
                             //Resolve Promise
                             resolve();
                         },3000)
-                        
                     }, 2000)
                },1000)
             },500)
         })
     }
     await sequencePromise();
-}
-
-//Function for running fightAnnouncement() on each fightInfo element
-const initiateFightAnnouncement = async () => {
+    }
+    
     for (const round of fightInfo) {
         await fightAnnouncement(round);
     }
 };
-
-
-
-
-
-
 
 //Initiate Pokemon Creation
 fetchPokemonData();
@@ -102,6 +100,7 @@ const battleBtn = document.getElementById("battle_Btn");
 //Eventlistener to start combat sequence
 battleBtn.addEventListener("click", ()=>{
     activePokemons[0].fightSequence(activePokemons[1]);
+    initiateFightAnnouncement();
 })
 
 /* Classes and Functions. */
@@ -218,28 +217,6 @@ class Pokemon {
         const battleEvents = document.getElementById("battle_event");
         const battleEventsA = document.getElementById("battle_eventA");
         const battleEventsB = document.getElementById("battle_eventB");
-
-/*         const announce = (attacker, defender, defenderHP, totalDmg)=>{
-            if(defenderHP < 0){
-                defenderHP = 0;
-            }
-
-            battleEvents.classList.remove("display_none");
-            battleEventsA.textContent = "Bam!";
-            battleEventsA.classList.remove("visibility_hidden");
-            setTimeout(()=>{
-                battleEventsB.textContent = `${attacker.name} attacked for ${totalDmg} damage.`;
-                battleEventsB.classList.remove("visibility_hidden");
-                setTimeout(()=>{
-                    battleEventsB.textContent = `${defender.name} has ${defenderHP} HP left.`;
-                    setTimeout(()=>{
-                        battleEvents.classList.add("display_none");
-                        battleEventsA.classList.add("visibility_hidden");
-                        battleEventsB.classList.add("visibility_hidden");
-                    },1000)
-                },1200)
-            },1000)
-        } */
 
         while(firstHP > 0 && secondHP > 0){
             firstAttack();
@@ -514,52 +491,3 @@ const highlightStats = ()=>{
 const fightSequence = () => {
     //reseta fight info
 }
-
-  
-
-
-
-
-//Fetch API Data.
-/* const promises = [];
-for(let i = 1; i <= 151; i++ ){
-    const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
-    promises.push(fetch(url).then((res) => res.json()));
-} */
-//Fill Array of Pokemons from data.
-//Create pokemon DOM Selections.
-//Compare active pokemons in winnerArr.
-/* Promise.all(promises).then((results) => {
-    results.forEach((e)=>{
-        const pokemon = new Pokemon(e.name, e.id, e.sprites.front_default, e.types, e.weight, e.height, e.stats);
-        pokemonArr.push(pokemon);
-        createSelections(pokemon);
-    });
-
-    randomPokemon();
-
-    highlightStats();
-}) */
-
-
-/* setTimeout(()=>{
-    if(fighter === first){
-        eventB.textContent = `${first.name} attacked ${second.name} for ${dmg} HP.`;
-        eventB.classList.toggle("display_none");
-        setTimeout(()=>{
-            eventB.classList.toggle("display_none"); 
-            eventB.textContent = "";
-        },2000) 
-        console.log("1");
-    }
-
-    else if (fighter === second) {
-        eventB.textContent = `${second.name} attacked ${first.name} for ${dmg} HP.`;
-        eventB.classList.toggle("display_none");
-        setTimeout(()=>{
-            eventB.classList.toggle("display_none"); 
-            eventB.textContent = "";
-        },2000)
-        console.log("2");
-    }
-},1000); */
