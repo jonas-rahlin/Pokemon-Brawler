@@ -207,7 +207,7 @@ class Pokemon {
 
             const attackInfo = {
                 attacker:second.name, 
-                damage:totalDmg,
+                damage:Math.round(totalDmg),
                 defender: first.name, 
                 hpLeft: firstHP
             }
