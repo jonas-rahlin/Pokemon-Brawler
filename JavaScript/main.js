@@ -106,6 +106,7 @@ class Pokemon {
 
     //Fight Sequence
     fightSequence(opponent) {
+        fightInfo = [];
         let first;
         let second;
 
