@@ -117,7 +117,7 @@ class Pokemon {
         if(this.stats[5].base_stat >= opponent.stats[5].base_stat){
             first = {...this};
             second = {...opponent};
-        }   else{
+        }   else {
             first = {...opponent};
             second = {...this};
         }
@@ -265,7 +265,7 @@ const createPokemon = (pokemon, selectorID, )=>{
     if(selectorID === pokemonSelectorA){
         pokemonDiv.id = "pokemonA";
         selectedID = "A";
-    } else{
+    } else {
         pokemonDiv.id = "pokemonB";
         selectedID = "B";
     }
@@ -494,7 +494,7 @@ const initiateFightAnnouncement = async () => {
 
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 battleEvent.classList.add("display_none");
-            } else{
+            } else {
                 //Pause announcement
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
