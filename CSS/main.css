@@ -132,6 +132,10 @@ main{
   color:yellow;
 }
 
+.winner_pokemon{
+  box-shadow: blue 0px 0px 0px 6px;
+}
+
 #battle{
   position:relative;
 }

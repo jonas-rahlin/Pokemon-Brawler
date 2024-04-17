@@ -23,10 +23,6 @@ fetchPokemonData()
   .then(() => {
     //Select random Pokemons
     return randomPokemon();
-  })
-  .then(() => {
-    //Highlight Winner stats in DOM
-    return highlightStats();
   });
 
 //Pokemon Selector DOM Variables.
@@ -392,12 +388,26 @@ const highlightStats = ()=>{
         element.classList.remove("winner_attr");
     });
 
-    pokemon.forEach((element)=>{
-        //Set active Pokemons and Winner values
-        activePokemons[0] = pokemonArr[pokemonSelectorA.value];
-        activePokemons[1] = pokemonArr[pokemonSelectorB.value];
-        winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
+    //Set active Pokemons and Winner values
+    activePokemons[0] = pokemonArr[pokemonSelectorA.value];
+    activePokemons[1] = pokemonArr[pokemonSelectorB.value];
+    winnerArr = activePokemons[0].comparePokemons(activePokemons[1]);
 
+    //Determine Overall Winner
+    const contestingID1 = activePokemons[0].id;
+    const contestingID2 = activePokemons[1].id;
+    const ID1wins = winnerArr.filter(num => num === contestingID1).length;
+    const ID2wins = winnerArr.filter(num => num === contestingID2).length;
+    let winnerPokemon;
+
+    if(ID1wins > ID2wins) {
+        winnerPokemon = contestingID1;
+    }
+    else if (ID2wins > ID1wins){
+        winnerPokemon =  contestingID2;
+    }
+   
+    pokemon.forEach((element) => {
         //DOM Element Variables
         let domHeight = element.querySelector('.pokemon_height');
         let domWeight = element.querySelector('.pokemon_weight');
@@ -407,6 +417,13 @@ const highlightStats = ()=>{
         let domAttS = element.querySelector('.pokemon_attS');
         let domDefS = element.querySelector('.pokemon_defS');
         let domSpeed = element.querySelector('.pokemon_speed');
+
+        //Highlight overall Winner
+        if(element.dataset.id === winnerPokemon.toString()){
+            element.classList.add("winner_pokemon");
+        } else {
+            element.classList.remove("winner_pokemon")
+        }
 
         //Highlight attributes
         if(element.dataset.id === winnerArr[0].toString()){
